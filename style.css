@@ -883,3 +883,51 @@ tr:hover {
         font-size: 30px;
     }
 }
+
+/* 
+    MY IMPACT PAGE LAYOUT
+    This makes the chart appear on the left and the statistic boxes appear on the right.
+*/
+.impact-layout {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 30px;
+    align-items: start;
+    margin-top: 30px;
+}
+
+/* Chart box on the left */
+.impact-chart {
+    width: 100%;
+    max-width: 650px;
+    margin: 0;
+}
+
+/* Statistic boxes on the right, stacked vertically */
+.impact-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Make each statistic box full width inside the right side */
+.impact-stats .stat-box {
+    width: 100%;
+    min-height: 140px;
+}
+
+/* Prevent the chart from becoming too huge */
+.impact-chart canvas {
+    max-height: 420px;
+}
+
+/* Mobile responsive layout */
+@media (max-width: 900px) {
+    .impact-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .impact-chart {
+        max-width: 100%;
+    }
+}
