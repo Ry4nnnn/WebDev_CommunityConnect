@@ -106,6 +106,7 @@ $status_stmt->close();
         <p><strong>Date:</strong> <?php echo date("F j, Y", strtotime($event['EventDate'])); ?></p>
         <p><strong>Location:</strong> <?php echo htmlspecialchars($event['Location']); ?></p>
         <p><strong>Capacity:</strong> <?php echo htmlspecialchars($event['Capacity']); ?> volunteers needed</p>
+        <p><strong>Estimated Volunteer Hours:</strong> <span class="hours-tag">4 volunteer hours</span></p>
     </div>
     
     <h3>About this program</h3>
@@ -117,6 +118,7 @@ $status_stmt->close();
 
     <?php if ($participation_status === null): ?>
         <p>You have not requested to join this event yet. Space is limited!</p>
+        <p>This event will add approximately <strong>4 volunteer hours</strong> to your impact after admin approval.</p>
 
         <form action="event_details.php?id=<?php echo $service_id; ?>" method="POST">
             <input type="hidden" name="action" value="join">
