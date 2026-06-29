@@ -15,12 +15,30 @@ $message = "";
 // REQUIREMENT: CRUD - DELETE
 // ==========================================
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
-    $delete_id = $_GET['delete'];
+    $delete_id = intval($_GET['delete']);
+
+    // Delete related feedback first because Feedback is linked to CommunityServices
+    $stmt_feedback = $conn->prepare("DELETE FROM Feedback WHERE ServiceID = ?");
+    $stmt_feedback->bind_param("i", $delete_id);
+    $stmt_feedback->execute();
+    $stmt_feedback->close();
+
+    // Delete related participation requests because ParticipationRequests is linked to CommunityServices
+    $stmt_requests = $conn->prepare("DELETE FROM ParticipationRequests WHERE ServiceID = ?");
+    $stmt_requests->bind_param("i", $delete_id);
+    $stmt_requests->execute();
+    $stmt_requests->close();
+
+    // Now delete the event from CommunityServices
     $stmt = $conn->prepare("DELETE FROM CommunityServices WHERE ServiceID = ?");
     $stmt->bind_param("i", $delete_id);
+
     if ($stmt->execute()) {
-        $message = "<div class='alert success'>Event deleted successfully from database.</div>";
+        $message = "<div class='alert success'>Event and related records deleted successfully.</div>";
+    } else {
+        $message = "<div class='alert error'>Error deleting event.</div>";
     }
+
     $stmt->close();
 }
 

@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS ParticipationRequests (
     Status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
     RequestDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (ServiceID) REFERENCES CommunityServices(ServiceID),
+    FOREIGN KEY (ServiceID) REFERENCES CommunityServices(ServiceID) ON DELETE CASCADE,
     UNIQUE (UserID, ServiceID)
 );
 
@@ -41,12 +41,13 @@ CREATE TABLE IF NOT EXISTS Feedback (
     Comment TEXT NOT NULL,
     SubmittedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (ServiceID) REFERENCES CommunityServices(ServiceID)
+    FOREIGN KEY (ServiceID) REFERENCES CommunityServices(ServiceID) ON DELETE CASCADE
 );
 
 INSERT IGNORE INTO Users (UserID, FullName, Email, PasswordHash, Role)
 VALUES 
-(1, 'Admin User', 'admin@communityconnect.com', 'admin123', 'Admin');
+(1, 'Admin User', 'admin@communityconnect.com', 'admin123', 'Admin'),
+(2, 'Default User', 'user@communityconnect.com', '$2y$12$ukUdqw9A7vbD0Eo65fjlzeiAhIQq9TWcGyakTl9GDhD4tmQhgySPq', 'Resident');
 
 INSERT IGNORE INTO CommunityServices (ServiceID, Title, Description, EventDate, Location, Capacity, AdminID)
 VALUES

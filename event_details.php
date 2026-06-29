@@ -20,17 +20,61 @@ $service_id = intval($_GET['id']);
 // 3. HANDLE FORM SUBMISSIONS (Join Request or Feedback)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
-    // Action A: User clicked "Join Event"
-    if (isset($_POST['action']) && $_POST['action'] == 'join') {
+    // Action A: User clicked "Join Event" or "Request Again"
+if (isset($_POST['action']) && $_POST['action'] == 'join') {
+
+    // First, check whether the user already has a request for this event
+    $check_stmt = $conn->prepare("SELECT RequestID, Status FROM ParticipationRequests WHERE UserID = ? AND ServiceID = ?");
+    $check_stmt->bind_param("ii", $user_id, $service_id);
+    $check_stmt->execute();
+    $check_result = $check_stmt->get_result();
+
+    // If the user has never requested this event before, insert a new Pending request
+    if ($check_result->num_rows === 0) {
         $stmt = $conn->prepare("INSERT INTO ParticipationRequests (UserID, ServiceID, Status) VALUES (?, ?, 'Pending')");
         $stmt->bind_param("ii", $user_id, $service_id);
+
         if ($stmt->execute()) {
             $message = "<div class='alert success'>Your request to join has been submitted and is pending admin approval!</div>";
         } else {
             $message = "<div class='alert error'>An error occurred while submitting your request.</div>";
         }
+
         $stmt->close();
+    } 
+    
+    else {
+        $existing_request = $check_result->fetch_assoc();
+
+        // If admin rejected the request, allow the user to request again by changing it back to Pending
+        if ($existing_request['Status'] === 'Rejected') {
+            $request_id = $existing_request['RequestID'];
+
+            $update_stmt = $conn->prepare("UPDATE ParticipationRequests SET Status = 'Pending', RequestDate = CURRENT_TIMESTAMP WHERE RequestID = ?");
+            $update_stmt->bind_param("i", $request_id);
+
+            if ($update_stmt->execute()) {
+                $message = "<div class='alert success'>Your request has been submitted again and is pending admin approval.</div>";
+            } else {
+                $message = "<div class='alert error'>An error occurred while resubmitting your request.</div>";
+            }
+
+            $update_stmt->close();
+        } 
+        
+        // If request is still Pending, do not allow duplicate request
+        elseif ($existing_request['Status'] === 'Pending') {
+            $message = "<div class='alert error'>You already have a pending request for this event.</div>";
+        } 
+        
+        // If request is Approved, user should not request again
+        elseif ($existing_request['Status'] === 'Approved') {
+            $message = "<div class='alert error'>You have already been approved for this event.</div>";
+        }
     }
+
+    $check_stmt->close();
+}
     
     // Action B: User submitted "Feedback" (Add-on Feature)
     if (isset($_POST['action']) && $_POST['action'] == 'feedback') {
@@ -117,20 +161,34 @@ $status_stmt->close();
     <h3>Participation Status</h3>
 
     <?php if ($participation_status === null): ?>
-        <p>You have not requested to join this event yet. Space is limited!</p>
-        <p>This event will add approximately <strong>4 volunteer hours</strong> to your impact after admin approval.</p>
+		<p>You have not requested to join this event yet. Space is limited!</p>
+		<p>This event will add approximately <strong>4 volunteer hours</strong> to your impact after admin approval.</p>
 
-        <form action="event_details.php?id=<?php echo $service_id; ?>" method="POST">
-            <input type="hidden" name="action" value="join">
-            <button type="submit" class="btn btn-join">Request to Join</button>
-        </form>
-    <?php else: ?>
-        <p>Your current status for this event is: 
-            <span class="badge <?php echo $participation_status; ?>">
-                <?php echo $participation_status; ?>
-            </span>
-        </p>
-    <?php endif; ?>
+		<form action="event_details.php?id=<?php echo $service_id; ?>" method="POST">
+			<input type="hidden" name="action" value="join">
+			<button type="submit" class="btn btn-join">Request to Join</button>
+		</form>
+
+	<?php elseif ($participation_status === 'Rejected'): ?>
+		<p>Your previous request was: 
+			<span class="badge Rejected">Rejected</span>
+		</p>
+
+		<p>You may submit another request for this event.</p>
+		<p>This event will add approximately <strong>4 volunteer hours</strong> to your impact after admin approval.</p>
+
+		<form action="event_details.php?id=<?php echo $service_id; ?>" method="POST">
+			<input type="hidden" name="action" value="join">
+			<button type="submit" class="btn btn-join">Request Again</button>
+		</form>
+
+	<?php else: ?>
+		<p>Your current status for this event is: 
+			<span class="badge <?php echo $participation_status; ?>">
+				<?php echo $participation_status; ?>
+			</span>
+		</p>
+	<?php endif; ?>
 
     <div class="feedback-section">
         <h3>Submit Event Feedback</h3>
