@@ -27,24 +27,11 @@ $result = $stmt->get_result();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- This viewport line helps make the website responsive on phones, tablets, and laptops -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Requests - CommunityConnect</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; }
-        .navbar { background-color: #007BFF; padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
-        .navbar a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; }
-        .navbar a:hover { text-decoration: underline; }
-        
-        .container { max-width: 900px; margin: 30px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background-color: #f8f9fa; }
-        
-        .badge { padding: 6px 12px; border-radius: 20px; font-size: 14px; font-weight: bold; color: white; display: inline-block; text-align: center;}
-        .badge.Pending { background-color: #ffc107; color: black; }
-        .badge.Approved { background-color: #28a745; }
-        .badge.Rejected { background-color: #dc3545; }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
 

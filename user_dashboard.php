@@ -30,28 +30,10 @@ $result = $conn->query($sql);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- This viewport line helps make the website responsive on phones, tablets, and laptops -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resident Dashboard - CommunityConnect</title>
-    <style>
-        /* Clean and modern UI styling */
-        body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; }
-        .navbar { background-color: #007BFF; padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
-        .navbar a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; }
-        .navbar a:hover { text-decoration: underline; }
-        .container { padding: 20px; max-width: 1000px; margin: 0 auto; }
-        .search-bar { margin-bottom: 20px; display: flex; gap: 10px; }
-        .search-bar input { padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 4px; }
-        .search-bar button { padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        .search-bar button:hover { background-color: #218838; }
-        
-        /* Grid Layout for Events */
-        .event-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .event-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .event-card h3 { margin-top: 0; color: #333; }
-        .event-card p { color: #666; font-size: 14px; margin: 5px 0; }
-        .btn-view { display: inline-block; margin-top: 15px; padding: 10px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 4px; text-align: center; }
-        .btn-view:hover { background-color: #0056b3; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -62,7 +44,8 @@ $result = $conn->query($sql);
     <div>
         <a href="user_dashboard.php">Dashboard</a>
         <a href="my_requests.php">My Requests</a>
-        <a href="my_impact.php">My Impact (Add-on)</a> <a href="logout.php" style="background: #dc3545; padding: 5px 10px; border-radius: 4px;">Log Out</a>
+        <a href="my_impact.php">My Impact (Add-on)</a>
+        <a href="logout.php" style="background: #dc3545; padding: 5px 10px; border-radius: 4px;">Log Out</a>
     </div>
 </div>
 
@@ -72,8 +55,9 @@ $result = $conn->query($sql);
     <form class="search-bar" action="user_dashboard.php" method="GET">
         <input type="text" name="search" placeholder="Search by title or location..." value="<?php echo htmlspecialchars($search_term); ?>">
         <button type="submit">Search</button>
+
         <?php if(!empty($search_term)): ?>
-            <a href="user_dashboard.php" style="padding: 10px; text-decoration: none; color: #dc3545;">Clear Search</a>
+            <a href="user_dashboard.php" class="btn btn-danger">Clear Search</a>
         <?php endif; ?>
     </form>
 

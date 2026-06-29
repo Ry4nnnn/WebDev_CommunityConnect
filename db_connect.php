@@ -1,6 +1,5 @@
 <?php
 
-
 $host = "localhost";
 $username = "root";       // Default XAMPP username
 $password = "";           // Default XAMPP password is empty

@@ -1,0 +1,885 @@
+/* 
+    UNIVERSAL SELECTOR
+    This makes sure padding and border are included inside the element's total width and height.
+    It helps prevent layout problems.
+*/
+* {
+    box-sizing: border-box;
+}
+
+/* 
+    BODY STYLING
+    This controls the main font, removes default spacing, and applies the same wallpaper background to all pages.
+*/
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    color: #222;
+
+    /* Same background for all pages */
+    background-image: url("images/image3.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* 
+    NAVIGATION BAR
+    This styles the top navigation bar used by resident pages.
+*/
+.navbar {
+    background-color: rgba(0, 123, 255, 0.95);
+    padding: 15px 25px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 
+    ADMIN NAVIGATION BAR
+    This changes the navbar color for admin pages so users can clearly tell they are in the admin section.
+*/
+.navbar.admin {
+    background-color: rgba(52, 58, 64, 0.95);
+}
+
+/* 
+    NAVBAR LINKS
+    This styles the links inside the navigation bar.
+*/
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin-left: 15px;
+    font-weight: bold;
+}
+
+/* 
+    NAVBAR LINK HOVER EFFECT
+    This underlines navbar links when the user moves the mouse over them.
+*/
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+/* 
+    MAIN CONTENT CONTAINER
+    This creates the white card layout used for dashboard, admin, request, and details pages.
+*/
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    background: rgba(255, 255, 255, 0.94);
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(6px);
+    overflow-x: auto;
+}
+
+/* 
+    SMALL CONTAINER
+    This is used for login, register, and forgot password forms.
+*/
+.container-small {
+    max-width: 380px;
+    margin: 80px auto;
+    background: rgba(255, 255, 255, 0.94);
+    padding: 35px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(8px);
+}
+
+/* 
+    AUTH PAGE LAYOUT
+    This centers the login, register, and forgot password boxes vertically and horizontally.
+*/
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* 
+    AUTH WRAPPER
+    This keeps the logo and form box aligned together.
+*/
+.auth-wrapper {
+    width: 100%;
+    max-width: 430px;
+    text-align: center;
+}
+
+/* 
+    LOGO TEXT BOX
+    This creates the dark rounded box behind the CommunityConnect logo text.
+*/
+.logo-text {
+    margin-bottom: 20px;
+    color: white;
+    background: rgba(0, 0, 0, 0.60);
+    padding: 20px 25px;
+    border-radius: 16px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* 
+    LOGO TITLE
+    This styles the CommunityConnect title.
+*/
+.logo-text h1 {
+    font-size: 36px;
+    margin: 0;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+/* 
+    LOGO SUBTITLE
+    This styles the slogan below the CommunityConnect title.
+*/
+.logo-text p {
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* 
+    AUTH FORM BOX
+    This makes the login/register/forgot password box fit properly inside the auth wrapper.
+*/
+.auth-page .container-small {
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+}
+
+/* 
+    FORM HEADINGS
+    This centers and colors the headings inside form containers.
+*/
+.auth-page h2,
+.container-small h2 {
+    text-align: center;
+    color: #0b2545;
+}
+
+/* 
+    AUTH PAGE BUTTONS
+    This makes buttons on login/register/forgot password pages full width.
+*/
+.auth-page button {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* 
+    FORM INPUTS
+    This styles all input fields, textareas, and dropdown menus.
+*/
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+/* 
+    FORM LABELS
+    This makes form labels bold and easier to read.
+*/
+label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* 
+    BUTTON BASE STYLE
+    This gives all buttons and button links the same shape, spacing, and text style.
+*/
+button,
+.btn,
+.btn-primary,
+.btn-success,
+.btn-danger,
+.btn-warning,
+.btn-secondary,
+.btn-view,
+.btn-join,
+.btn-back,
+.btn-feedback,
+.btn-approve,
+.btn-reject {
+    display: inline-block;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* 
+    PRIMARY BUTTON
+    This is used for main actions such as search or submit.
+*/
+button,
+.btn-primary {
+    background-color: #007BFF;
+    color: white;
+}
+
+button:hover,
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* 
+    SUCCESS BUTTON
+    This is used for positive actions such as add, save, or approve.
+*/
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+/* 
+    DANGER BUTTON
+    This is used for delete, logout, reject, or cancel actions.
+*/
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* 
+    WARNING BUTTON
+    This is used for edit actions.
+*/
+.btn-warning {
+    background-color: #ffc107;
+    color: black;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+/* 
+    SECONDARY BUTTON
+    This is used for neutral actions such as clear or back.
+*/
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* 
+    VIEW BUTTON
+    This is used on event cards to view event details.
+*/
+.btn-view {
+    margin-top: 15px;
+    background-color: #007BFF;
+    color: white;
+}
+
+.btn-view:hover {
+    background-color: #0056b3;
+}
+
+/* 
+    JOIN BUTTON
+    This is used when a resident requests to join an event.
+*/
+.btn-join {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-join:hover {
+    background-color: #218838;
+}
+
+/* 
+    BACK BUTTON
+    This is used to go back to the previous page or dashboard.
+*/
+.btn-back {
+    background-color: #6c757d;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.btn-back:hover {
+    background-color: #5a6268;
+}
+
+/* 
+    FEEDBACK BUTTON
+    This is used for submitting feedback.
+*/
+.btn-feedback {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.btn-feedback:hover {
+    background-color: #138496;
+}
+
+/* 
+    APPROVE BUTTON
+    This is used by the admin to approve participation requests.
+*/
+.btn-approve {
+    background-color: #28a745;
+    color: white;
+    padding: 6px 10px;
+}
+
+/* 
+    REJECT BUTTON
+    This is used by the admin to reject participation requests.
+*/
+.btn-reject {
+    background-color: #dc3545;
+    color: white;
+    padding: 6px 10px;
+}
+
+/* 
+    TABLE ACTION BUTTONS
+    This makes Edit and Delete buttons inside tables smaller and properly spaced.
+*/
+td .btn-warning,
+td .btn-danger,
+td .btn-success,
+td .btn-secondary {
+    padding: 6px 10px;
+    font-size: 14px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+/* 
+    ALERT BOX
+    This is the base style for success and error messages.
+*/
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+}
+
+/* 
+    SUCCESS ALERT
+    This shows green messages when an action is successful.
+*/
+.alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* 
+    ERROR ALERT
+    This shows red messages when something goes wrong.
+*/
+.alert.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* 
+    SIMPLE ERROR TEXT
+    This is used for smaller error messages, such as login errors.
+*/
+.error {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* 
+    TABLE STYLE
+    This styles the tables used for requests, admin services, and feedback.
+*/
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+}
+
+/* 
+    TABLE CELLS
+    This adds spacing and borders to table headers and table data.
+*/
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 
+    TABLE HEADER
+    This gives the table header a light background.
+*/
+th {
+    background-color: #f8f9fa;
+}
+
+/* 
+    TABLE HEADER SORTING LINKS
+    This styles clickable table headers used for sorting.
+*/
+th a {
+    color: #333;
+    text-decoration: none;
+}
+
+th a:hover {
+    text-decoration: underline;
+}
+
+/* 
+    TABLE ROW HOVER
+    This gives a slight highlight when hovering over a table row.
+*/
+tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* 
+    STATUS BADGE BASE STYLE
+    This creates rounded labels for Pending, Approved, and Rejected statuses.
+*/
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    display: inline-block;
+}
+
+/* 
+    PENDING STATUS BADGE
+    Yellow badge for pending applications.
+*/
+.badge.Pending {
+    background-color: #ffc107;
+    color: black;
+}
+
+/* 
+    APPROVED STATUS BADGE
+    Green badge for approved applications.
+*/
+.badge.Approved {
+    background-color: #28a745;
+}
+
+/* 
+    REJECTED STATUS BADGE
+    Red badge for rejected applications.
+*/
+.badge.Rejected {
+    background-color: #dc3545;
+}
+
+/* 
+    SEARCH BAR
+    This aligns the search input and search button in one row.
+*/
+.search-form,
+.search-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* 
+    SEARCH INPUT
+    This allows the search box to take up available space.
+*/
+.search-form input,
+.search-bar input {
+    flex: 1;
+    margin: 0;
+}
+
+/* 
+    SEARCH BUTTON
+    This prevents the search button from stretching too much.
+*/
+.search-form button,
+.search-bar button {
+    width: auto;
+    white-space: nowrap;
+}
+
+/* 
+    ADMIN CONTROL SECTION
+    This controls the search, filter, clear, and add service area on admin pages.
+*/
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+/* 
+    ADMIN CONTROL FORM
+    This keeps admin search and filtering controls aligned neatly.
+*/
+.controls form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 0;
+}
+
+/* 
+    ADMIN CONTROL INPUTS
+    This sets a fixed width for the admin search box and dropdown.
+*/
+.controls input,
+.controls select {
+    width: 230px;
+    margin: 0;
+}
+
+/* 
+    ADMIN CONTROL BUTTON
+    This keeps the admin buttons from stretching.
+*/
+.controls button {
+    width: auto;
+    white-space: nowrap;
+}
+
+/* 
+    ADMIN CONTROL LINKS
+    This keeps Clear and Add New Service buttons on one line.
+*/
+.controls .btn-secondary,
+.controls .btn-success {
+    white-space: nowrap;
+}
+
+/* 
+    TABS SECTION
+    This styles the filter tabs used in request management pages.
+*/
+.tabs {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+/* 
+    TAB LINKS
+    This styles each tab link.
+*/
+.tabs a {
+    text-decoration: none;
+    padding: 10px 20px;
+    color: #666;
+    font-weight: bold;
+}
+
+/* 
+    ACTIVE TAB
+    This highlights the currently selected tab.
+*/
+.tabs a.active {
+    color: #007BFF;
+    border-bottom: 3px solid #007BFF;
+}
+
+/* 
+    EVENT GRID
+    This displays event cards in a responsive grid layout.
+*/
+.event-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* 
+    EVENT CARD
+    This styles each community service/event card.
+*/
+.event-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* 
+    EVENT CARD TITLE
+    This removes extra space above event card titles.
+*/
+.event-card h3 {
+    margin-top: 0;
+}
+
+/* 
+    EVENT META BOX
+    This styles the event information box on the event details page.
+*/
+.event-meta {
+    background: #e9ecef;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+/* 
+    STATISTICS GRID
+    This arranges the impact statistics boxes in one row.
+*/
+.stats-grid {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+/* 
+    STATISTICS BOX
+    This styles each impact summary box.
+*/
+.stat-box {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    text-align: center;
+}
+
+/* 
+    STATISTICS TITLE
+    This styles the smaller title text inside each stat box.
+*/
+.stat-box h3 {
+    margin: 0;
+    color: #666;
+    font-size: 16px;
+}
+
+/* 
+    STATISTICS NUMBER
+    This styles the large number shown inside each stat box.
+*/
+.stat-box .number {
+    font-size: 34px;
+    font-weight: bold;
+    color: #007BFF;
+}
+
+/* 
+    CHART CONTAINER
+    This styles the box that contains the Chart.js doughnut chart.
+*/
+.chart-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* 
+    FEEDBACK SECTION
+    This separates the feedback form from the event details section.
+*/
+.feedback-section {
+    margin-top: 40px;
+    border-top: 2px solid #eee;
+    padding-top: 20px;
+}
+
+/* 
+    FEEDBACK FORM INPUTS
+    This styles the feedback rating dropdown and comment box.
+*/
+.feedback-form select,
+.feedback-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* 
+    STAR RATING DISPLAY
+    This styles star icons if feedback ratings are shown using stars.
+*/
+.stars {
+    color: #ffc107;
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+/* 
+    LOGIN AND REGISTER LINKS
+    This centers the links below login/register/forgot password forms.
+*/
+.links {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+/* 
+    LOGIN AND REGISTER LINK STYLE
+    This styles the clickable links below the forms.
+*/
+.links a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+/* 
+    PAGINATION
+    This styles page number buttons used in the admin service table.
+*/
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+/* 
+    PAGINATION LINKS
+    This styles each page number.
+*/
+.pagination a {
+    padding: 8px 12px;
+    background: #e9ecef;
+    text-decoration: none;
+    color: #333;
+    border-radius: 4px;
+}
+
+/* 
+    ACTIVE PAGINATION LINK
+    This highlights the current page number.
+*/
+.pagination a.active {
+    background: #007BFF;
+    color: white;
+}
+
+/* 
+    ADMIN ADD/EDIT FORM SECTION
+    This styles the form box used when admin adds or edits a community service.
+*/
+.form-section {
+    background: rgba(248, 249, 250, 0.95);
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* 
+    ADMIN ADD/EDIT FORM LABELS
+    This makes labels inside the admin form clearer.
+*/
+.form-section label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+/* 
+    MOBILE RESPONSIVE DESIGN
+    This changes the layout on smaller screens so the website is easier to use on phones and tablets.
+*/
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .navbar a {
+        margin-left: 0;
+        margin-right: 10px;
+    }
+
+    .search-form,
+    .search-bar,
+    .controls,
+    .controls form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .controls input,
+    .controls select,
+    .controls button,
+    .controls .btn-secondary,
+    .controls .btn-success {
+        width: 100%;
+    }
+
+    .stats-grid {
+        flex-direction: column;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    .logo-text h1 {
+        font-size: 30px;
+    }
+}

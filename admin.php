@@ -118,50 +118,20 @@ function build_url($updates) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- This viewport line helps make the website responsive on phones, tablets, and laptops -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Manage Services</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; }
-        .navbar { background-color: #343a40; padding: 15px 20px; color: white; display: flex; justify-content: space-between; }
-        .navbar a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; }
-        .navbar a:hover { text-decoration: underline; }
-        
-        .container { max-width: 1100px; margin: 30px auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        
-        .controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: #e9ecef; padding: 15px; border-radius: 5px; }
-        .controls form { display: flex; gap: 10px; align-items: center; }
-        .controls input, .controls select, .controls button { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-        
-        .btn-primary { background-color: #007BFF; color: white; cursor: pointer; text-decoration: none; padding: 8px 15px; border: none; display: inline-block;}
-        .btn-success { background-color: #28a745; color: white; cursor: pointer; text-decoration: none; padding: 8px 15px; border: none;}
-        .btn-danger { background-color: #dc3545; color: white; cursor: pointer; text-decoration: none; padding: 6px 10px; font-size: 14px;}
-        .btn-warning { background-color: #ffc107; color: black; cursor: pointer; text-decoration: none; padding: 6px 10px; font-size: 14px;}
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background-color: #f8f9fa; }
-        th a { color: #333; text-decoration: none; }
-        th a:hover { text-decoration: underline; }
-        
-        .pagination { margin-top: 20px; display: flex; gap: 5px; justify-content: center; }
-        .pagination a { padding: 8px 12px; background: #e9ecef; text-decoration: none; color: #333; border-radius: 4px; }
-        .pagination a.active { background: #007BFF; color: white; }
-        
-        .alert { padding: 15px; margin-bottom: 20px; border-radius: 4px; }
-        .alert.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .alert.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-
-        .form-section { background: #f8f9fa; padding: 20px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 20px; }
-        .form-section label { font-weight: bold; display: block; margin-top: 10px; }
-        .form-section input, .form-section textarea { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-    </style>
+    <!-- style.css -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="navbar">
+<div class="navbar admin">
     <div><strong>CommunityConnect Admin</strong></div>
     <div>
         <a href="admin.php" style="text-decoration: underline;">Manage Services</a>
         <a href="manage_requests.php">Manage Requests</a>
+        <a href="moderate_feedback.php">Moderate Feedback</a>
         <a href="logout.php" style="background: #dc3545; padding: 5px 10px; border-radius: 4px;">Log Out</a>
     </div>
 </div>
@@ -193,8 +163,10 @@ function build_url($updates) {
             $edit_stmt->close();
         }
     ?>
+
     <div class="form-section">
         <h3><?php echo $_GET['action'] == 'add' ? 'Create New Database Entry' : 'Update Database Record'; ?></h3>
+
         <form action="admin.php" method="POST">
             <input type="hidden" name="submit_action" value="<?php echo $_GET['action']; ?>">
             <input type="hidden" name="service_id" value="<?php echo $service_id; ?>">
@@ -235,7 +207,7 @@ function build_url($updates) {
             <input type="hidden" name="dir" value="<?php echo $sort_dir; ?>">
             
             <button type="submit" class="btn-primary">Apply Filtering & Search</button>
-            <a href="admin.php" style="color: #666; font-size: 14px; text-decoration: none; margin-left: 10px;">Clear</a>
+            <a href="admin.php" class="btn-secondary">Clear</a>
         </form>
         
         <a href="admin.php?action=add" class="btn-success">+ Add New Service</a>
@@ -252,6 +224,7 @@ function build_url($updates) {
                 <th>Actions</th>
             </tr>
         </thead>
+
         <tbody>
             <?php
             if ($result->num_rows > 0) {

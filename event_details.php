@@ -63,11 +63,14 @@ $status_stmt = $conn->prepare("SELECT Status FROM ParticipationRequests WHERE Us
 $status_stmt->bind_param("ii", $user_id, $service_id);
 $status_stmt->execute();
 $status_result = $status_stmt->get_result();
+
 $participation_status = null;
+
 if ($status_result->num_rows > 0) {
     $row = $status_result->fetch_assoc();
     $participation_status = $row['Status']; // Will be 'Pending', 'Approved', or 'Rejected'
 }
+
 $status_stmt->close();
 ?>
 
@@ -75,38 +78,10 @@ $status_stmt->close();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- This viewport line helps make the website responsive on phones, tablets, and laptops -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($event['Title']); ?> - Details</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; }
-        .navbar { background-color: #007BFF; padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
-        .navbar a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; }
-        .navbar a:hover { text-decoration: underline; }
-        
-        .container { max-width: 800px; margin: 30px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        h1 { color: #333; margin-top: 0; }
-        .event-meta { background: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
-        .event-meta p { margin: 5px 0; font-size: 16px; }
-        
-        .btn { padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; display: inline-block; text-decoration: none; }
-        .btn-join { background-color: #28a745; color: white; }
-        .btn-join:hover { background-color: #218838; }
-        .btn-back { background-color: #6c757d; color: white; margin-bottom: 20px; }
-        
-        .badge { padding: 8px 15px; border-radius: 20px; font-weight: bold; color: white; display: inline-block; }
-        .badge.Pending { background-color: #ffc107; color: black; }
-        .badge.Approved { background-color: #28a745; }
-        .badge.Rejected { background-color: #dc3545; }
-        
-        .alert { padding: 15px; margin-bottom: 20px; border-radius: 4px; }
-        .alert.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .alert.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        
-        /* Feedback Section Styling */
-        .feedback-section { margin-top: 40px; border-top: 2px solid #eee; padding-top: 20px; }
-        .feedback-form select, .feedback-form textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .btn-feedback { background-color: #17a2b8; color: white; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -139,8 +114,10 @@ $status_stmt->close();
     <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
 
     <h3>Participation Status</h3>
+
     <?php if ($participation_status === null): ?>
         <p>You have not requested to join this event yet. Space is limited!</p>
+
         <form action="event_details.php?id=<?php echo $service_id; ?>" method="POST">
             <input type="hidden" name="action" value="join">
             <button type="submit" class="btn btn-join">Request to Join</button>

@@ -69,39 +69,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log In - CommunityConnect</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .login-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 320px; }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background-color: #007BFF; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        button:hover { background-color: #0056b3; }
-        .error { color: red; font-size: 14px; text-align: center; font-weight: bold; }
-        label { font-weight: bold; font-size: 14px; }
-        .links { text-align: center; font-size: 14px; margin-top: 15px; }
-        .links a { color: #007BFF; text-decoration: none; }
-        .links a:hover { text-decoration: underline; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="auth-page">
 
-<div class="login-container">
-    <h2 style="text-align: center;">Welcome Back</h2>
-    
-    <?php if(!empty($error_message)) echo "<p class='error'>$error_message</p>"; ?>
+<div class="auth-wrapper">
+    <div class="logo-text">
+        <h1>CommunityConnect</h1>
+        <p>Building a Stronger and More Connected Community</p>
+    </div>
 
-    <form action="login.php" method="POST">
-        <label>Email Address:</label>
-        <input type="email" name="email" required placeholder="Enter your email" value="<?php echo $email_val; ?>">
-        
-        <label>Password:</label>
-        <input type="password" name="password" required placeholder="Enter your password">
-        
-        <button type="submit">Log In</button>
-    </form>
+    <div class="container-small">
+        <h2>Welcome Back</h2>
     
-    <div class="links">
-        <a href="forgot_password.php">Forgot Password?</a><br><br>
-        Don't have an account? <a href="register.php">Register here</a>
+        <?php if(!empty($error_message)) echo "<p class='error'>$error_message</p>"; ?>
+
+        <form action="login.php" method="POST">
+            <label>Email Address:</label>
+            <input type="email" name="email" required placeholder="Enter your email" value="<?php echo $email_val; ?>">
+            
+            <label>Password:</label>
+            <input type="password" name="password" required placeholder="Enter your password">
+            
+            <button type="submit">Log In</button>
+        </form>
+        
+        <div class="links">
+            <a href="forgot_password.php">Forgot Password?</a><br><br>
+            Don't have an account? <a href="register.php">Register here</a>
+        </div>
     </div>
 </div>
 

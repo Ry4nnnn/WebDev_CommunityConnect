@@ -36,27 +36,13 @@ $total_hours = $approved * 4;
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- This viewport line helps make the website responsive on phones, tablets, and laptops -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Impact - CommunityConnect</title>
+
+    <link rel="stylesheet" href="style.css">
+    <!-- add-on feature -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f9; margin: 0; }
-        .navbar { background-color: #007BFF; padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; }
-        .navbar a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; }
-        .navbar a:hover { text-decoration: underline; }
-        
-        .container { max-width: 900px; margin: 30px auto; }
-        
-        /* Dashboard Stats Styling */
-        .stats-grid { display: flex; gap: 20px; margin-bottom: 30px; }
-        .stat-box { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; }
-        .stat-box h3 { margin: 0; color: #666; font-size: 16px; }
-        .stat-box .number { font-size: 36px; font-weight: bold; color: #007BFF; margin: 10px 0 0 0; }
-        .stat-box.success .number { color: #28a745; }
-        
-        /* Chart Container */
-        .chart-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 100%; max-width: 400px; margin: 0 auto; }
-    </style>
 </head>
 <body>
 
@@ -79,10 +65,12 @@ $total_hours = $approved * 4;
             <h3>Events Joined</h3>
             <p class="number"><?php echo $approved; ?></p>
         </div>
+
         <div class="stat-box success">
             <h3>Estimated Volunteer Hours</h3>
             <p class="number"><?php echo $total_hours; ?> hrs</p>
         </div>
+
         <div class="stat-box">
             <h3>Pending Applications</h3>
             <p class="number" style="color: #ffc107;"><?php echo $pending; ?></p>
@@ -98,6 +86,7 @@ $total_hours = $approved * 4;
 <script>
     // Javascript to render the Chart.js visual
     const ctx = document.getElementById('impactChart').getContext('2d');
+
     const impactChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
