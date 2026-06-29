@@ -41,6 +41,7 @@ $result = $stmt->get_result();
         <a href="user_dashboard.php">Dashboard</a>
         <a href="my_requests.php" style="text-decoration: underline;">My Requests</a>
         <a href="my_impact.php">My Impact</a>
+        <a href="feedback.php">Feedback</a>
         <a href="logout.php" style="background: #dc3545; padding: 5px 10px; border-radius: 4px;">Log Out</a>
     </div>
 </div>

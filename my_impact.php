@@ -28,8 +28,24 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
-// Calculate dummy hours (Assume 4 hours per approved event)
-$total_hours = $approved * 4;
+// Calculate total volunteer hours based on approved events and event start/end time
+$hours_stmt = $conn->prepare("
+    SELECT COALESCE(SUM(TIME_TO_SEC(TIMEDIFF(cs.EventEndTime, cs.EventStartTime)) / 3600), 0) AS total_hours
+    FROM ParticipationRequests pr
+    JOIN CommunityServices cs ON pr.ServiceID = cs.ServiceID
+    WHERE pr.UserID = ?
+    AND pr.Status = 'Approved'
+");
+
+$hours_stmt->bind_param("i", $user_id);
+$hours_stmt->execute();
+$hours_result = $hours_stmt->get_result();
+$hours_row = $hours_result->fetch_assoc();
+
+$total_hours = round($hours_row['total_hours'], 1);
+
+$hours_stmt->close();
+
 ?>
 
 <!DOCTYPE html>
@@ -52,6 +68,7 @@ $total_hours = $approved * 4;
         <a href="user_dashboard.php">Dashboard</a>
         <a href="my_requests.php">My Requests</a>
         <a href="my_impact.php" style="text-decoration: underline;">My Impact</a>
+        <a href="feedback.php">Feedback</a>
         <a href="logout.php" style="background: #dc3545; padding: 5px 10px; border-radius: 4px;">Log Out</a>
     </div>
 </div>

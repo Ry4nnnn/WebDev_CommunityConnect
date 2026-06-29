@@ -102,6 +102,13 @@ if ($event_result->num_rows === 0) {
 $event = $event_result->fetch_assoc();
 $stmt->close();
 
+// Calculate event time and volunteer hours
+$start_time = date("g:i A", strtotime($event['EventStartTime']));
+$end_time = date("g:i A", strtotime($event['EventEndTime']));
+
+$duration_hours = (strtotime($event['EventEndTime']) - strtotime($event['EventStartTime'])) / 3600;
+$duration_text = rtrim(rtrim(number_format($duration_hours, 1), '0'), '.');
+
 // 5. CHECK USER'S PARTICIPATION STATUS
 $status_stmt = $conn->prepare("SELECT Status FROM ParticipationRequests WHERE UserID = ? AND ServiceID = ?");
 $status_stmt->bind_param("ii", $user_id, $service_id);
@@ -135,6 +142,7 @@ $status_stmt->close();
         <a href="user_dashboard.php">Dashboard</a>
         <a href="my_requests.php">My Requests</a>
         <a href="my_impact.php">My Impact</a>
+		<a href="feedback.php">Feedback</a>
         <a href="logout.php" style="background: #dc3545; padding: 5px 10px; border-radius: 4px;">Log Out</a>
     </div>
 </div>
@@ -147,11 +155,12 @@ $status_stmt->close();
     <h1><?php echo htmlspecialchars($event['Title']); ?></h1>
     
     <div class="event-meta">
-        <p><strong>Date:</strong> <?php echo date("F j, Y", strtotime($event['EventDate'])); ?></p>
-        <p><strong>Location:</strong> <?php echo htmlspecialchars($event['Location']); ?></p>
-        <p><strong>Capacity:</strong> <?php echo htmlspecialchars($event['Capacity']); ?> volunteers needed</p>
-        <p><strong>Estimated Volunteer Hours:</strong> <span class="hours-tag">4 volunteer hours</span></p>
-    </div>
+		<p><strong>Date:</strong> <?php echo date("F j, Y", strtotime($event['EventDate'])); ?></p>
+		<p><strong>Time:</strong> <?php echo $start_time; ?> - <?php echo $end_time; ?></p>
+		<p><strong>Location:</strong> <?php echo htmlspecialchars($event['Location']); ?></p>
+		<p><strong>Capacity:</strong> <?php echo htmlspecialchars($event['Capacity']); ?> volunteers needed</p>
+		<p><strong>Estimated Volunteer Hours:</strong> <span class="hours-tag"><?php echo $duration_text; ?> volunteer hours</span></p>
+	</div>
     
     <h3>About this program</h3>
     <p style="line-height: 1.6;"><?php echo nl2br(htmlspecialchars($event['Description'])); ?></p>
@@ -162,7 +171,7 @@ $status_stmt->close();
 
     <?php if ($participation_status === null): ?>
 		<p>You have not requested to join this event yet. Space is limited!</p>
-		<p>This event will add approximately <strong>4 volunteer hours</strong> to your impact after admin approval.</p>
+		<p>This event will add approximately <strong><?php echo $duration_text; ?> volunteer hours</strong> to your impact after admin approval.</p>
 
 		<form action="event_details.php?id=<?php echo $service_id; ?>" method="POST">
 			<input type="hidden" name="action" value="join">
@@ -189,29 +198,6 @@ $status_stmt->close();
 			</span>
 		</p>
 	<?php endif; ?>
-
-    <div class="feedback-section">
-        <h3>Submit Event Feedback</h3>
-        <p style="font-size: 14px; color: #666;">Did you attend this event? Leave a rating and comment to help Harmony Community Association improve future programs!</p>
-        
-        <form class="feedback-form" action="event_details.php?id=<?php echo $service_id; ?>" method="POST">
-            <input type="hidden" name="action" value="feedback">
-            
-            <label><strong>Rating (1-5):</strong></label>
-            <select name="rating" required>
-                <option value="5">5 - Excellent</option>
-                <option value="4">4 - Good</option>
-                <option value="3">3 - Average</option>
-                <option value="2">2 - Poor</option>
-                <option value="1">1 - Terrible</option>
-            </select>
-            
-            <label><strong>Your Comment:</strong></label>
-            <textarea name="comment" rows="4" required placeholder="Tell us about your experience..."></textarea>
-            
-            <button type="submit" class="btn btn-feedback">Submit Feedback</button>
-        </form>
-    </div>
 
 </div>
 

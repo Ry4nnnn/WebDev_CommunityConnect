@@ -1,7 +1,8 @@
-CREATE DATABASE IF NOT EXISTS CommunityConnect;
+DROP DATABASE IF EXISTS CommunityConnect;
+CREATE DATABASE CommunityConnect;
 USE CommunityConnect;
 
-CREATE TABLE IF NOT EXISTS Users (
+CREATE TABLE Users (
     UserID INT AUTO_INCREMENT PRIMARY KEY,
     FullName VARCHAR(100) NOT NULL,
     Email VARCHAR(100) NOT NULL UNIQUE,
@@ -10,11 +11,13 @@ CREATE TABLE IF NOT EXISTS Users (
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS CommunityServices (
+CREATE TABLE CommunityServices (
     ServiceID INT AUTO_INCREMENT PRIMARY KEY,
     Title VARCHAR(150) NOT NULL,
     Description TEXT NOT NULL,
     EventDate DATE NOT NULL,
+    EventStartTime TIME NOT NULL,
+    EventEndTime TIME NOT NULL,
     Location VARCHAR(150) NOT NULL,
     Capacity INT NOT NULL,
     AdminID INT,
@@ -22,7 +25,7 @@ CREATE TABLE IF NOT EXISTS CommunityServices (
     FOREIGN KEY (AdminID) REFERENCES Users(UserID)
 );
 
-CREATE TABLE IF NOT EXISTS ParticipationRequests (
+CREATE TABLE ParticipationRequests (
     RequestID INT AUTO_INCREMENT PRIMARY KEY,
     UserID INT NOT NULL,
     ServiceID INT NOT NULL,
@@ -33,7 +36,7 @@ CREATE TABLE IF NOT EXISTS ParticipationRequests (
     UNIQUE (UserID, ServiceID)
 );
 
-CREATE TABLE IF NOT EXISTS Feedback (
+CREATE TABLE Feedback (
     FeedbackID INT AUTO_INCREMENT PRIMARY KEY,
     UserID INT NOT NULL,
     ServiceID INT NOT NULL,
@@ -41,17 +44,18 @@ CREATE TABLE IF NOT EXISTS Feedback (
     Comment TEXT NOT NULL,
     SubmittedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    FOREIGN KEY (ServiceID) REFERENCES CommunityServices(ServiceID) ON DELETE CASCADE
+    FOREIGN KEY (ServiceID) REFERENCES CommunityServices(ServiceID) ON DELETE CASCADE,
+    UNIQUE (UserID, ServiceID)
 );
 
-INSERT IGNORE INTO Users (UserID, FullName, Email, PasswordHash, Role)
+INSERT INTO Users (UserID, FullName, Email, PasswordHash, Role)
 VALUES 
 (1, 'Admin User', 'admin@communityconnect.com', 'admin123', 'Admin'),
-(2, 'Default User', 'user@communityconnect.com', '$2y$12$ukUdqw9A7vbD0Eo65fjlzeiAhIQq9TWcGyakTl9GDhD4tmQhgySPq', 'Resident');
+(2, 'Default User', 'user@communityconnect.com', '$2y$12$mblawyo1N5rPz25DXe1sHe6.bsa1TJSp.AWftpEsnBu5Yl8t/DIkW', 'Resident');
 
-INSERT IGNORE INTO CommunityServices (ServiceID, Title, Description, EventDate, Location, Capacity, AdminID)
+INSERT INTO CommunityServices (ServiceID, Title, Description, EventDate, EventStartTime, EventEndTime, Location, Capacity, AdminID)
 VALUES
-(1, 'Neighbourhood Clean-Up Campaign', 'Join us to clean the neighbourhood and promote a cleaner community.', '2026-07-05', 'Klang Valley Park', 30, 1),
-(2, 'Charity Donation Drive', 'Help collect and organize donation items for families in need.', '2026-07-10', 'Community Hall', 25, 1),
-(3, 'Tree Planting Activity', 'Support SDG 11 by planting trees and improving green spaces.', '2026-07-15', 'Taman Community Area', 40, 1),
-(4, 'Educational Workshop', 'A workshop to educate residents about sustainable living.', '2026-07-20', 'Harmony Learning Centre', 20, 1);
+(1, 'Neighbourhood Clean-Up Campaign', 'Join us to clean the neighbourhood and promote a cleaner community.', '2026-07-05', '09:00:00', '13:00:00', 'Klang Valley Park', 30, 1),
+(2, 'Charity Donation Drive', 'Help collect and organize donation items for families in need.', '2026-07-10', '10:00:00', '14:00:00', 'Community Hall', 25, 1),
+(3, 'Tree Planting Activity', 'Support SDG 11 by planting trees and improving green spaces.', '2026-07-15', '08:00:00', '12:00:00', 'Taman Community Area', 40, 1),
+(4, 'Educational Workshop', 'A workshop to educate residents about sustainable living.', '2026-07-20', '13:00:00', '16:00:00', 'Harmony Learning Centre', 20, 1);

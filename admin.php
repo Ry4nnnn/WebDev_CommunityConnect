@@ -50,28 +50,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_action'])) {
     $title = trim($_POST['title']);
     $description = trim($_POST['description']);
     $event_date = $_POST['event_date'];
+    $event_start_time = $_POST['event_start_time'];
+    $event_end_time = $_POST['event_end_time'];
     $location = trim($_POST['location']);
     $capacity = intval($_POST['capacity']);
     $service_id = isset($_POST['service_id']) ? intval($_POST['service_id']) : 0;
 
     // RUBRIC REQUIREMENT: Validation (Server-side)
-    if (empty($title) || empty($description) || empty($event_date) || empty($location)) {
+    if (empty($title) || empty($description) || empty($event_date) || empty($event_start_time) || empty($event_end_time) || empty($location)) {
         $message = "<div class='alert error'>Validation Error: All fields are required.</div>";
+    } elseif ($event_end_time <= $event_start_time) {
+        $message = "<div class='alert error'>Validation Error: End time must be later than start time.</div>";
     } elseif ($capacity < 1) {
         $message = "<div class='alert error'>Validation Error: Capacity must be at least 1.</div>";
     } else {
         if ($_POST['submit_action'] == 'add') {
             // CREATE Request
-            $stmt = $conn->prepare("INSERT INTO CommunityServices (Title, Description, EventDate, Location, Capacity, AdminID) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssii", $title, $description, $event_date, $location, $capacity, $admin_id);
+            $stmt = $conn->prepare("INSERT INTO CommunityServices (Title, Description, EventDate, EventStartTime, EventEndTime, Location, Capacity, AdminID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssssii", $title, $description, $event_date, $event_start_time, $event_end_time, $location, $capacity, $admin_id);
             if ($stmt->execute()) {
                 $message = "<div class='alert success'>Event successfully created in database!</div>";
             }
             $stmt->close();
         } elseif ($_POST['submit_action'] == 'edit') {
             // UPDATE Request
-            $stmt = $conn->prepare("UPDATE CommunityServices SET Title=?, Description=?, EventDate=?, Location=?, Capacity=? WHERE ServiceID=?");
-            $stmt->bind_param("ssssii", $title, $description, $event_date, $location, $capacity, $service_id);
+            $stmt = $conn->prepare("UPDATE CommunityServices SET Title=?, Description=?, EventDate=?, EventStartTime=?, EventEndTime=?, Location=?, Capacity=? WHERE ServiceID=?");
+            $stmt->bind_param("ssssssii", $title, $description, $event_date, $event_start_time, $event_end_time, $location, $capacity, $service_id);
             if ($stmt->execute()) {
                 $message = "<div class='alert success'>Event database record updated successfully!</div>";
             }
@@ -161,7 +165,7 @@ function build_url($updates) {
     <?php if (isset($_GET['action']) && ($_GET['action'] == 'add' || $_GET['action'] == 'edit')): 
         
         // Fetch database data if editing
-        $edit_title = $edit_desc = $edit_loc = $edit_date = $edit_cap = "";
+        $edit_title = $edit_desc = $edit_loc = $edit_date = $edit_start_time = $edit_end_time = $edit_cap = "";
         $service_id = 0;
         
         if ($_GET['action'] == 'edit' && isset($_GET['id'])) {
@@ -175,6 +179,8 @@ function build_url($updates) {
                 $edit_title = $edit_data['Title'];
                 $edit_desc = $edit_data['Description'];
                 $edit_loc = $edit_data['Location'];
+                $edit_start_time = $edit_data['EventStartTime'];
+                $edit_end_time = $edit_data['EventEndTime'];
                 $edit_date = $edit_data['EventDate'];
                 $edit_cap = $edit_data['Capacity'];
             }
@@ -197,6 +203,12 @@ function build_url($updates) {
             
             <label>Event Date</label>
             <input type="date" name="event_date" value="<?php echo $edit_date; ?>" required>
+
+            <label>Start Time</label>
+            <input type="time" name="event_start_time" value="<?php echo $edit_start_time; ?>" required>
+
+            <label>End Time</label>
+            <input type="time" name="event_end_time" value="<?php echo $edit_end_time; ?>" required>
             
             <label>Location</label>
             <input type="text" name="location" value="<?php echo htmlspecialchars($edit_loc); ?>" required>
