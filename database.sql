@@ -8,6 +8,7 @@ CREATE TABLE Users (
     Email VARCHAR(100) NOT NULL UNIQUE,
     PasswordHash VARCHAR(255) NOT NULL,
     Role ENUM('Admin', 'Resident') NOT NULL DEFAULT 'Resident',
+    ProfilePicture VARCHAR(255) NULL,
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
