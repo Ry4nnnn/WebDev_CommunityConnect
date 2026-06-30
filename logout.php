@@ -1,14 +1,20 @@
 <?php
-// 1. Resume the current active session (find the keycard)
+// Start or resume the current session.
+// This is needed so PHP can access the logged-in user's session data.
 session_start();
 
-// 2. Unset all session variables (erase the data on the keycard)
+// Remove all session variables.
+// This clears stored user data such as user_id, full_name, and role.
 session_unset();
 
-// 3. Destroy the session completely (shred the keycard)
+// Destroy the current session completely.
+// After this, the user is no longer considered logged in.
 session_destroy();
 
-// 4. Kick the user back to the login page
+// Redirect the user back to the login page after logging out.
 header("Location: login.php");
-exit(); // Always use exit after a redirect to stop the script
+
+// Stop the script after redirecting.
+// This prevents any further code from running.
+exit();
 ?>

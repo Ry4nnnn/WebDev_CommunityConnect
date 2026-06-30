@@ -1,18 +1,28 @@
 <?php
-
+// Database server name.
+// Since this project is running on XAMPP locally, the host is localhost.
 $host = "localhost";
-$username = "root";       // Default XAMPP username
-$password = "";           // Default XAMPP password is empty
-$database = "CommunityConnect"; // The name of the database we just created
 
-// Create the connection using MySQLi
+// Default XAMPP MySQL username is root.
+$username = "root";
+
+// Default XAMPP MySQL password is empty.
+$password = "";
+
+// Name of the database used for this CommunityConnect system.
+$database = "CommunityConnect";
+
+// Create the database connection using MySQLi.
+// This connects PHP to the MySQL database.
 $conn = new mysqli($host, $username, $password, $database);
 
-// Check if the connection failed
+// Check whether the database connection failed.
+// If there is an error, the system will stop and display the error message.
 if ($conn->connect_error) {
     die("Database Connection Failed: " . $conn->connect_error);
 }
 
-// You can uncomment the line below just to test it, but delete it later!
+// This line can be used for testing the database connection.
+// It should stay commented or be removed before final submission.
 // echo "Connected successfully!";
 ?>
