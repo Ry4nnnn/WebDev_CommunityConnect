@@ -15,6 +15,34 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Resident') {
     exit();
 }
 
+// ===============================
+// ADD-ON FEATURE: EVENT REMINDER
+// ===============================
+// This reminder checks whether the logged-in resident has any approved upcoming events.
+// If the resident has an approved event that has not happened yet,
+// the system will display a reminder message on the dashboard.
+$reminder_stmt = $conn->prepare("
+    SELECT c.Title, c.EventDate, c.EventStartTime 
+    FROM ParticipationRequests p 
+    JOIN CommunityServices c ON p.ServiceID = c.ServiceID 
+    WHERE p.UserID = ? 
+    AND p.Status = 'Approved' 
+    AND c.EventDate >= CURDATE() 
+    ORDER BY c.EventDate ASC
+");
+
+// Bind the logged-in user's ID into the reminder query.
+$reminder_stmt->bind_param("i", $_SESSION['user_id']);
+
+// Execute the reminder query.
+$reminder_stmt->execute();
+
+// Store the reminder result so it can be displayed later in the HTML section.
+$reminder_result = $reminder_stmt->get_result();
+
+// Close the reminder prepared statement after use.
+$reminder_stmt->close();
+
 // 3. CORE REQUIREMENT: Search Functionality
 // This variable stores the keyword entered by the user in the search bar.
 $search_term = "";
@@ -72,7 +100,7 @@ $result = $conn->query($sql);
 
     <div>
         <!-- Link to resident dashboard -->
-        <a href="user_dashboard.php">Dashboard</a>
+        <a href="user_dashboard.php" style="text-decoration: underline;">Dashboard</a>
 
         <!-- Link to view the resident's submitted participation requests -->
         <a href="my_requests.php">My Requests</a>
@@ -91,6 +119,28 @@ $result = $conn->query($sql);
 <!-- Main Content Container -->
 <div class="container">
     <h2>Available Community Services</h2>
+
+    <!-- Event Reminder Section -->
+    <!-- This section only appears if the resident has approved upcoming events -->
+    <?php if ($reminder_result->num_rows > 0): ?>
+
+        <!-- Loop through each approved upcoming event and display it as a reminder -->
+        <?php while($reminder = $reminder_result->fetch_assoc()): ?>
+            <div class="alert success" style="background-color: #cce5ff; color: #004085; border-color: #b8daff; margin-bottom: 15px;">
+                <strong>🔔 Reminder:</strong> You have an upcoming event! 
+                
+                <!-- Display the approved event title safely -->
+                <strong><?php echo htmlspecialchars($reminder['Title']); ?></strong> is on 
+
+                <!-- Display the event date in readable format -->
+                <strong><?php echo date("F j, Y", strtotime($reminder['EventDate'])); ?></strong> at 
+
+                <!-- Display the event start time in readable format -->
+                <strong><?php echo date("g:i A", strtotime($reminder['EventStartTime'])); ?></strong>.
+            </div>
+        <?php endwhile; ?>
+
+    <?php endif; ?>
 
     <!-- Search form -->
     <!-- GET method is used so the search keyword appears in the URL -->
