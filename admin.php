@@ -195,7 +195,32 @@ $offset = ($page - 1) * $limit;
 
 // 4. CRUD - READ: Final Query bringing it all together
 // This query reads community service records based on search, filter, sort, and pagination
-$sql = "SELECT * FROM CommunityServices $sql_where ORDER BY $sort_col $sort_dir LIMIT $limit OFFSET $offset";
+$sql = "
+    SELECT 
+        CommunityServices.*,
+
+        (
+            SELECT COUNT(*) 
+            FROM ParticipationRequests pr 
+            WHERE pr.ServiceID = CommunityServices.ServiceID 
+            AND pr.Status = 'Approved'
+        ) AS approved_count,
+
+        (
+            Capacity - (
+                SELECT COUNT(*) 
+                FROM ParticipationRequests pr 
+                WHERE pr.ServiceID = CommunityServices.ServiceID 
+                AND pr.Status = 'Approved'
+            )
+        ) AS remaining_slots
+
+    FROM CommunityServices 
+    $sql_where 
+    ORDER BY $sort_col $sort_dir 
+    LIMIT $limit OFFSET $offset
+";
+
 $result = $conn->query($sql);
 
 // Helper function to maintain search/filter state while changing pages or sorting
@@ -389,7 +414,7 @@ function build_url($updates) {
                 <th><a href="<?php echo build_url(['sort'=>'Location', 'dir'=>$next_dir]); ?>">Location <?php if($sort_col=='Location') echo ($sort_dir=='ASC')?'&uarr;':'&darr;'; ?></a></th>
 
                 <!-- Sortable capacity column -->
-                <th><a href="<?php echo build_url(['sort'=>'Capacity', 'dir'=>$next_dir]); ?>">Capacity <?php if($sort_col=='Capacity') echo ($sort_dir=='ASC')?'&uarr;':'&darr;'; ?></a></th>
+                <th><a href="<?php echo build_url(['sort'=>'Capacity', 'dir'=>$next_dir]); ?>">Slots <?php if($sort_col=='Capacity') echo ($sort_dir=='ASC')?'&uarr;':'&darr;'; ?></a></th>
 
                 <!-- Actions column contains Edit and Delete buttons -->
                 <th>Actions</th>
@@ -413,8 +438,13 @@ function build_url($updates) {
                     // Display event location safely using htmlspecialchars
                     echo "<td>" . htmlspecialchars($row['Location']) . "</td>";
 
-                    // Display event capacity
-                    echo "<td>" . $row['Capacity'] . "</td>";
+                    // Calculate remaining slots.
+                    // Remaining slots = total capacity - approved requests.
+                    $remaining_slots = max(0, intval($row['remaining_slots']));
+                    $total_capacity = intval($row['Capacity']);
+
+                    // Display remaining slots out of total capacity.
+                    echo "<td>" . $remaining_slots . "/" . $total_capacity . " remaining slots</td>";
 
                     // Display Edit and Delete action buttons
                     // Edit opens the form with the selected event data
