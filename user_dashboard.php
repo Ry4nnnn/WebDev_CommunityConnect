@@ -106,13 +106,19 @@ $result = $conn->query($sql);
         <a href="my_requests.php">My Requests</a>
 
         <!-- Link to My Impact add-on feature -->
-        <a href="my_impact.php">My Impact (Add-on)</a>
+        <a href="profile.php">My Profile</a>
 
         <!-- Link to feedback page where residents can review completed events -->
         <a href="feedback.php">Feedback</a>
 
         <!-- Logout button ends the session and returns user to login page -->
-        <a href="logout.php" style="background: #dc3545; padding: 5px 10px; border-radius: 4px;">Log Out</a>
+        <a 
+            href="logout.php" 
+            onclick="return confirm('Are you sure you want to log out?');"
+            style="background: #dc3545; padding: 5px 10px; border-radius: 4px;"
+        >
+            Log Out
+        </a>
     </div>
 </div>
 

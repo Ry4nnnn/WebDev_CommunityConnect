@@ -191,13 +191,19 @@ $result = $stmt->get_result();
     <div>
         <a href="user_dashboard.php">Dashboard</a>
         <a href="my_requests.php">My Requests</a>
-        <a href="my_impact.php">My Impact</a>
+        <a href="profile.php">My Profile</a>
 
         <!-- Feedback link is underlined because this is the current page -->
         <a href="feedback.php" style="text-decoration: underline;">Feedback</a>
 
         <!-- Logout button ends the user's session -->
-        <a href="logout.php" style="background: #dc3545; padding: 5px 10px; border-radius: 4px;">Log Out</a>
+        <a 
+			href="logout.php" 
+			onclick="return confirm('Are you sure you want to log out?');"
+			style="background: #dc3545; padding: 5px 10px; border-radius: 4px;"
+		>
+			Log Out
+		</a>
     </div>
 </div>
 

@@ -931,3 +931,100 @@ tr:hover {
         max-width: 100%;
     }
 }
+
+/* 
+    PROFILE CARD
+    This styles the profile section shown above the impact statistics.
+*/
+.profile-card {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    max-width: 850px;
+    margin: 30px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* 
+    PROFILE PICTURE SECTION
+    This keeps the profile image centered.
+*/
+.profile-picture-section {
+    text-align: center;
+}
+
+/* 
+    PROFILE PICTURE
+    This styles the uploaded profile picture as a circle.
+*/
+.profile-picture {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #007BFF;
+}
+
+/* 
+    PROFILE PLACEHOLDER
+    This appears if the user has not uploaded a profile picture.
+*/
+.profile-placeholder {
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: #e9ecef;
+    border: 4px solid #007BFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 65px;
+}
+
+/* 
+    PROFILE INFO
+    This controls the text area beside the profile picture.
+*/
+.profile-info {
+    flex: 1;
+}
+
+/* 
+    PROFILE INFO TEXT
+    This makes the profile details easier to read.
+*/
+.profile-info p {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* 
+    EDIT PROFILE BOX
+    This styles the edit profile form.
+*/
+.edit-profile-box {
+    max-width: 650px;
+    margin: 20px auto 35px auto;
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+}
+
+/* 
+    RESPONSIVE PROFILE LAYOUT
+    On smaller screens, the profile picture moves above the information.
+*/
+@media (max-width: 700px) {
+    .profile-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-info {
+        width: 100%;
+    }
+}

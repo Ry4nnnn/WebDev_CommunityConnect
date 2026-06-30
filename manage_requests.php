@@ -175,7 +175,13 @@ $result = $stmt->get_result();
         <a href="moderate_feedback.php">Moderate Feedback</a>
 
         <!-- Logout button ends the admin session -->
-        <a href="logout.php" style="background: #dc3545; padding: 5px 10px; border-radius: 4px;">Log Out</a>
+        <a 
+            href="logout.php" 
+            onclick="return confirm('Are you sure you want to log out?');"
+            style="background: #dc3545; padding: 5px 10px; border-radius: 4px;"
+        >
+            Log Out
+        </a>
     </div>
 </div>
 

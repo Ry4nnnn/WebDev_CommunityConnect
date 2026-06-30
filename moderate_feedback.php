@@ -67,7 +67,13 @@ $result = $conn->query($sql);
         <a href="admin.php">Manage Services</a>
         <a href="manage_requests.php">Manage Requests</a>
         <a href="moderate_feedback.php" style="text-decoration: underline;">Moderate Feedback</a>
-        <a href="logout.php" style="background: #dc3545; padding: 5px 10px; border-radius: 4px;">Log Out</a>
+        <a 
+            href="logout.php" 
+            onclick="return confirm('Are you sure you want to log out?');"
+            style="background: #dc3545; padding: 5px 10px; border-radius: 4px;"
+        >
+            Log Out
+        </a>
     </div>
 </div>
 
