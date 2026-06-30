@@ -50,7 +50,7 @@ CREATE TABLE Feedback (
 
 INSERT INTO Users (UserID, FullName, Email, PasswordHash, Role)
 VALUES 
-(1, 'Admin User', 'admin@communityconnect.com', 'admin123', 'Admin'),
+(1, 'Admin User', 'admin@communityconnect.com', '$2y$10$RDIXpUtUY2VNPLdA8NqIlOKHHiaB68DQ.ERcXPG/0sfXbC4uuen0K', 'Admin'),
 (2, 'Default User', 'user@communityconnect.com', '$2y$12$mblawyo1N5rPz25DXe1sHe6.bsa1TJSp.AWftpEsnBu5Yl8t/DIkW', 'Resident');
 
 INSERT INTO CommunityServices (ServiceID, Title, Description, EventDate, EventStartTime, EventEndTime, Location, Capacity, AdminID)
