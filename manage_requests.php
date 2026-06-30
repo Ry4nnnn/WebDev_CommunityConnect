@@ -174,6 +174,8 @@ $result = $stmt->get_result();
 
         <a href="moderate_feedback.php">Moderate Feedback</a>
 
+        <a href="manage_users.php">Manage Users</a>
+
         <!-- Logout button ends the admin session -->
         <a 
             href="logout.php" 

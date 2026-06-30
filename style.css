@@ -1028,3 +1028,144 @@ tr:hover {
         width: 100%;
     }
 }
+
+/* 
+    MANAGE USERS PAGE
+    This styles the Manage Users admin page.
+*/
+.manage-users-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.manage-users-header h2 {
+    margin-bottom: 8px;
+    color: #0b2545;
+}
+
+.manage-users-header p {
+    color: #666;
+    margin-top: 0;
+}
+
+/* 
+    USER FILTER BOX
+    This styles the search and filter section.
+*/
+.user-controls {
+    background: #f8f9fa;
+    padding: 18px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    margin-bottom: 25px;
+}
+
+.user-controls form {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.user-controls input,
+.user-controls select {
+    max-width: 260px;
+    margin-bottom: 0;
+}
+
+/* 
+    USER ROLE BADGES
+    These badges display Admin and Resident roles clearly.
+*/
+.badge.Admin {
+    background-color: #343a40;
+    color: white;
+}
+
+.badge.Resident {
+    background-color: #17a2b8;
+    color: white;
+}
+
+/* 
+    MANAGE USERS TABLE
+    This improves spacing and readability for the user table.
+*/
+.manage-users-table th {
+    background-color: #eef3f8;
+    color: #0b2545;
+    font-weight: bold;
+}
+
+.manage-users-table td {
+    vertical-align: middle;
+}
+
+.manage-users-table tr:hover {
+    background-color: #f4f8ff;
+}
+
+/* 
+    PROTECTED ADMIN TEXT
+    This is shown instead of Delete for admin accounts.
+*/
+.protected-text {
+    color: #666;
+    font-weight: bold;
+    background: #e9ecef;
+    padding: 7px 10px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+/* 
+    USER COUNT CARDS
+    Optional summary cards for Manage Users page.
+*/
+.user-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.user-summary-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+}
+
+.user-summary-card h3 {
+    margin-top: 0;
+    color: #555;
+    font-size: 15px;
+}
+
+.user-summary-card .number {
+    font-size: 32px;
+    font-weight: bold;
+    color: #007BFF;
+    margin: 0;
+}
+
+/* 
+    RESPONSIVE MANAGE USERS PAGE
+*/
+@media (max-width: 800px) {
+    .user-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .user-controls form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .user-controls input,
+    .user-controls select {
+        max-width: 100%;
+    }
+}
