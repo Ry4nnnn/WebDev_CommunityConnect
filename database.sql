@@ -56,8 +56,7 @@ VALUES
 
 INSERT INTO CommunityServices (ServiceID, Title, Description, EventDate, EventStartTime, EventEndTime, Location, Capacity, AdminID)
 VALUES
-(1, 'Neighbourhood Clean-Up Campaign', 'Join us to clean the neighbourhood and promote a cleaner community.', '2026-07-05', '09:00:00', '13:00:00', 'Klang Valley Park', 30, 1),
-
+(1, 'Neighbourhood Clean-Up Campaign', 'Join us to clean the neighbourhood and promote a cleaner community.', '2026-07-05', '09:00:00', '13:00:00', 'Klang Valley Park', 1, 1),
 (2, 'Charity Donation Drive', 'Help collect and organize donation items for families in need.', '2026-07-10', '10:00:00', '14:00:00', 'Community Hall', 25, 1),
 (3, 'Tree Planting Activity', 'Support SDG 11 by planting trees and improving green spaces.', '2026-07-15', '08:00:00', '12:00:00', 'Taman Community Area', 40, 1),
 (4, 'Educational Workshop', 'A workshop to educate residents about sustainable living.', '2026-07-20', '13:00:00', '16:00:00', 'Harmony Learning Centre', 20, 1),

@@ -50,7 +50,17 @@ $search_term = "";
 // We only want to show events that haven't happened yet (EventDate >= CURDATE).
 // CURDATE() gets today's date from MySQL.
 // This means past events will not appear on the resident dashboard.
-$sql = "SELECT * FROM CommunityServices WHERE EventDate >= CURDATE()";
+$sql = "
+    SELECT 
+        c.*,
+        COUNT(pr.RequestID) AS approved_count,
+        (c.Capacity - COUNT(pr.RequestID)) AS remaining_slots
+    FROM CommunityServices c
+    LEFT JOIN ParticipationRequests pr 
+        ON c.ServiceID = pr.ServiceID 
+        AND pr.Status = 'Approved'
+    WHERE c.EventDate >= CURDATE()
+";
 
 // Check whether the user entered a search keyword.
 if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
@@ -63,11 +73,11 @@ if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
 
     // Add search condition to the SQL query.
     // Users can search events by title or location.
-    $sql .= " AND (Title LIKE '%$safe_search%' OR Location LIKE '%$safe_search%')";
+    $sql .= " AND (c.Title LIKE '%$safe_search%' OR c.Location LIKE '%$safe_search%')";
 }
 
 // Sort the available events by nearest upcoming date first.
-$sql .= " ORDER BY EventDate ASC";
+$sql .= " GROUP BY c.ServiceID ORDER BY c.EventDate ASC";
 
 // Run the final SQL query and store the result.
 $result = $conn->query($sql);
@@ -189,8 +199,12 @@ $result = $conn->query($sql);
                 // Display event location safely.
                 echo "<p><strong>Location:</strong> " . htmlspecialchars($row['Location']) . "</p>";
 
-                // Display volunteer capacity safely.
-                echo "<p><strong>Capacity:</strong> " . htmlspecialchars($row['Capacity']) . " volunteers</p>";
+                // Remaining slots = total capacity - approved requests.
+                $remaining_slots = max(0, intval($row['remaining_slots']));
+                $total_capacity = intval($row['Capacity']);
+
+                // Display remaining slots instead of only total capacity.
+                echo "<p><strong>Slots:</strong> " . $remaining_slots . "/" . $total_capacity . " remaining slots</p>";
 
                 // This button will take them to the details page where they can actually submit the request!
                 // The ServiceID is passed through the URL so event_details.php knows which event to display.

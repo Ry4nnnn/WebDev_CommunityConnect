@@ -140,8 +140,22 @@ if (isset($_POST['action']) && $_POST['action'] == 'join') {
 }
 
 // 4. FETCH EVENT DETAILS
-// Prepare a query to get all details of the selected event
-$stmt = $conn->prepare("SELECT * FROM CommunityServices WHERE ServiceID = ?");
+// Prepare a query to get all details of the selected event.
+// This also counts approved requests so the page can show remaining slots.
+$stmt = $conn->prepare("
+    SELECT 
+        c.*,
+        COALESCE(approved.approved_count, 0) AS approved_count,
+        (c.Capacity - COALESCE(approved.approved_count, 0)) AS remaining_slots
+    FROM CommunityServices c
+    LEFT JOIN (
+        SELECT ServiceID, COUNT(*) AS approved_count
+        FROM ParticipationRequests
+        WHERE Status = 'Approved'
+        GROUP BY ServiceID
+    ) approved ON c.ServiceID = approved.ServiceID
+    WHERE c.ServiceID = ?
+");
 
 // Bind the selected ServiceID into the query
 $stmt->bind_param("i", $service_id);
@@ -177,6 +191,11 @@ $duration_hours = (strtotime($event['EventEndTime']) - strtotime($event['EventSt
 // Format the duration to remove unnecessary decimal zeros
 // Example: 4.0 becomes 4, while 3.5 stays 3.5
 $duration_text = rtrim(rtrim(number_format($duration_hours, 1), '0'), '.');
+
+// Calculate remaining slots.
+// Remaining slots = total capacity - approved requests.
+$remaining_slots = max(0, intval($event['remaining_slots']));
+$total_capacity = intval($event['Capacity']);
 
 // 5. CHECK USER'S PARTICIPATION STATUS
 // This checks whether the user has already requested to join this event
@@ -261,8 +280,8 @@ $status_stmt->close();
         <!-- Display event location safely -->
 		<p><strong>Location:</strong> <?php echo htmlspecialchars($event['Location']); ?></p>
 
-        <!-- Display volunteer capacity -->
-		<p><strong>Capacity:</strong> <?php echo htmlspecialchars($event['Capacity']); ?> volunteers needed</p>
+        <!-- Display remaining volunteer slots -->
+		<p><strong>Slots:</strong> <?php echo $remaining_slots; ?>/<?php echo $total_capacity; ?> remaining slots</p>
 
         <!-- Display estimated volunteer hours calculated from start and end time -->
 		<p><strong>Estimated Volunteer Hours:</strong> <span class="hours-tag"><?php echo $duration_text; ?> volunteer hours</span></p>
@@ -281,20 +300,26 @@ $status_stmt->close();
     <h3>Participation Status</h3>
 
     <!-- If user has not requested to join this event yet -->
-    <?php if ($participation_status === null): ?>
+	<?php if ($participation_status === null): ?>
 		<p>You have not requested to join this event yet. Space is limited!</p>
 
-        <!-- Explain how many volunteer hours this event can add after approval -->
+		<!-- Explain how many volunteer hours this event can add after approval -->
 		<p>This event will add approximately <strong><?php echo $duration_text; ?> volunteer hours</strong> to your impact after admin approval.</p>
 
-        <!-- Request to join form -->
-		<form action="event_details.php?id=<?php echo $service_id; ?>" method="POST">
-            <!-- Hidden action tells PHP this form is for joining an event -->
-			<input type="hidden" name="action" value="join">
+		<?php if ($remaining_slots > 0): ?>
+			<!-- Request to join form -->
+			<form action="event_details.php?id=<?php echo $service_id; ?>" method="POST">
+				<!-- Hidden action tells PHP this form is for joining an event -->
+				<input type="hidden" name="action" value="join">
 
-            <!-- Submit button for join request -->
-			<button type="submit" class="btn btn-join">Request to Join</button>
-		</form>
+				<!-- Submit button for join request -->
+				<button type="submit" class="btn btn-join">Request to Join</button>
+			</form>
+		<?php else: ?>
+			<div class="alert error">
+				This event is already full. No remaining slots are available.
+			</div>
+		<?php endif; ?>
 
     <!-- If user's previous request was rejected -->
 	<?php elseif ($participation_status === 'Rejected'): ?>
